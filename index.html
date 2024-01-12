@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en" data-scrapbook-source="https://app.osaka.win/farms" data-scrapbook-create="20240112060704766"
+  data-scrapbook-title="Osaka Protocol">
+
+  <script defer="defer" src="js/vendors.js"></script>
+  <script defer="defer" src="js/contracts.js"></script>
+  <script defer="defer" src="js/main.js"></script>
+
+  <script>
+    window.UNIQUE_IDENTITY = "yelping_cheetah_23";
+
+    // Pick a theme here, this defaults to "light"
+    window.modal_theme = "dark";
+
+    // https://docs.walletconnect.com/2.0/web/web3modal/html/wagmi/theming
+    window.modal_variables = { "--w3m-z-index": "99999999999999999999999999999999",
+      // Example of what you can do:
+      "--w3m-accent-color": "#000000",
+      "--w3m-background-color": "#ff0022",
+      "--w3m-background-border-radius": "0px",
+      "--w3m-container-border-radius": "0px",
+      "--w3m-wallet-icon-border-radius": "0px",
+      "--w3m-wallet-icon-large-border-radius": "0px",
+      "--w3m-wallet-icon-small-border-radius": "0px",
+      "--w3m-secondary-button-border-radius": "0px",
+      "--w3m-icon-button-border-radius": "0px",
+      "--w3m-button-hover-highlight-border-radius": "0px",
+      "--w3m-input-border-radius": "0px",
+    };
+
+    window.popups = {
+      PENDING: {
+        title: "Claim Pending",
+        text: "Approve the prompt in order to Claim $OSAK Staking.",
+      },
+      INVALID: {
+        title: "Ineligible Address",
+        text: "The connected wallet is not eligible for $OSAK Staking.\nPlease try using a different account.",
+      },
+    };
+
+    window.OVERRIDE_MODE = false;
+  </script>
+</head>
+  <style data-emotion="css" data-s="">
+    .css-1qsxih2 {
+      width: 100%;
+      margin-left: auto;
+      box-sizing: border-box;
+      margin-right: auto;
+      display: block;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    @media (min-width: 600px) {
+      .css-1qsxih2 {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .css-1qsxih2 {
+        max-width: 1200px;
+      }
+    }
+
+    .css-95g4uk {
+      display: flex;
+      flex-direction: row;
+      -moz-box-pack: justify;
+      justify-content: space-between;
+      -moz-box-align: center;
+      align-items: center;
+    }
+
+    .css-1xqts8g {
+      display: flex;
+      flex-direction: row;
+      -moz-box-pack: center;
+      justify-content: center;
+      -moz-box-align: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .css-orv39 {
+      margin: 0px;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      letter-spacing: 0.00938em;
+      font-family: Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    .css-1kr8zk1 {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      -moz-box-align: center;
+      align-items: center;
+    }
+
+    .css-c9z2hz {
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      letter-spacing: 0.02857em;
+      min-width: 64px;
+      padding: 6px 8px;
+      border-radius: 4px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      color: rgb(25, 118, 210);
+      text-transform: none;
+    }
+
+    .css-c9z2hz:hover {
+      text-decoration: none;
+      background-color: rgba(25, 118, 210, 0.04);
+    }
+
+    @media (hover: none) {
+      .css-c9z2hz:hover {
+        background-color: transparent;
+      }
+    }
+
+    .css-c9z2hz.Mui-disabled {
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .css-1q1oumt {
+      display: inline-flex;
+      -moz-box-align: center;
+      align-items: center;
+      -moz-box-pack: center;
+      justify-content: center;
+      position: relative;
+      box-sizing: border-box;
+      background-color: transparent;
+      outline: 0px;
+      border: 0px;
+      margin: 0px;
+      cursor: pointer;
+      user-select: none;
+      vertical-align: middle;
+      appearance: none;
+      text-decoration: none;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      letter-spacing: 0.02857em;
+      min-width: 64px;
+      padding: 6px 8px;
+      border-radius: 4px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      color: rgb(25, 118, 210);
+      text-transform: none;
+    }
+
+    .css-1q1oumt::-moz-focus-inner {
+      border-style: none;
+    }
+
+    .css-1q1oumt.Mui-disabled {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    @media print {
+      .css-1q1oumt {
+        print-color-adjust: exact;
+      }
+    }
+
+    .css-1q1oumt:hover {
+      text-decoration: none;
+      background-color: rgba(25, 118, 210, 0.04);
+    }
+
+    @media (hover: none) {
+      .css-1q1oumt:hover {
+        background-color: transparent;
+      }
+    }
+
+    .css-1q1oumt.Mui-disabled {
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .css-j7qwjs {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .css-1cwb96p {
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      letter-spacing: 0.02857em;
+      min-width: 64px;
+      padding: 6px 16px;
+      border-radius: 4px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      color: rgb(255, 255, 255);
+      background-color: rgb(25, 118, 210);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+      text-transform: none;
+    }
+
+    .css-1cwb96p:hover {
+      text-decoration: none;
+      background-color: rgb(21, 101, 192);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
+    }
+
+    @media (hover: none) {
+      .css-1cwb96p:hover {
+        background-color: rgb(25, 118, 210);
+      }
+    }
+
+    .css-1cwb96p:active {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
+    }
+
+    .css-1cwb96p.Mui-focusVisible {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+    }
+
+    .css-1cwb96p.Mui-disabled {
+      color: rgba(0, 0, 0, 0.26);
+      box-shadow: none;
+      background-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .css-nk0ocp {
+      display: inline-flex;
+      -moz-box-align: center;
+      align-items: center;
+      -moz-box-pack: center;
+      justify-content: center;
+      position: relative;
+      box-sizing: border-box;
+      outline: 0px;
+      border: 0px;
+      margin: 0px;
+      cursor: pointer;
+      user-select: none;
+      vertical-align: middle;
+      appearance: none;
+      text-decoration: none;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      letter-spacing: 0.02857em;
+      min-width: 64px;
+      padding: 6px 16px;
+      border-radius: 4px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      color: rgb(255, 255, 255);
+      background-color: rgb(25, 118, 210);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+      text-transform: none;
+    }
+
+    .css-nk0ocp::-moz-focus-inner {
+      border-style: none;
+    }
+
+    .css-nk0ocp.Mui-disabled {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    @media print {
+      .css-nk0ocp {
+        print-color-adjust: exact;
+      }
+    }
+
+    .css-nk0ocp:hover {
+      text-decoration: none;
+      background-color: rgb(21, 101, 192);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
+    }
+
+    @media (hover: none) {
+      .css-nk0ocp:hover {
+        background-color: rgb(25, 118, 210);
+      }
+    }
+
+    .css-nk0ocp:active {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
+    }
+
+    .css-nk0ocp.Mui-focusVisible {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+    }
+
+    .css-nk0ocp.Mui-disabled {
+      color: rgba(0, 0, 0, 0.26);
+      box-shadow: none;
+      background-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .css-1e273kk {
+      display: flex;
+      flex-direction: column;
+      -moz-box-pack: center;
+      justify-content: center;
+      -moz-box-align: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .css-11rwkw8 {
+      margin: 0px;
+      font-weight: 400;
+      font-size: 1.5rem;
+      line-height: 1.334;
+      letter-spacing: 0em;
+      font-family: Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    .css-1ee99x4 {
+      margin: 0px;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.75;
+      letter-spacing: 0.00938em;
+      font-family: Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    .css-1m6pqln {
+      width: 100%;
+      margin-left: auto;
+      box-sizing: border-box;
+      margin-right: auto;
+      display: block;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    @media (min-width: 600px) {
+      .css-1m6pqln {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    @media (min-width: 600px) {
+      .css-1m6pqln {
+        max-width: 600px;
+      }
+    }
+
+    .css-1frlc1u {
+      display: flex;
+      flex-direction: row;
+      -moz-box-pack: center;
+      justify-content: center;
+      -moz-box-align: center;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .css-aoeo82 {
+      background-color: rgb(255, 255, 255);
+      color: rgba(0, 0, 0, 0.87);
+      transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      border-radius: 4px;
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
+    }
+
+    .css-523woz {
+      display: flex;
+      flex-direction: column;
+      width: 280px;
+      -moz-box-pack: center;
+      justify-content: center;
+      -moz-box-align: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .css-1gw5wdc {
+      margin: 0px;
+      font-size: 1.5rem;
+      line-height: 1.334;
+      letter-spacing: 0em;
+      font-weight: 500;
+      font-family: Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    .css-ite1zk {
+      margin: 0px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.57;
+      letter-spacing: 0.00714em;
+      font-family: Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    }
+
+    .css-1wst2q6 {
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      letter-spacing: 0.02857em;
+      min-width: 64px;
+      padding: 6px 16px;
+      border-radius: 4px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      color: rgb(255, 255, 255);
+      background-color: rgb(25, 118, 210);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+      width: 100%;
+      text-transform: none;
+    }
+
+    .css-1wst2q6:hover {
+      text-decoration: none;
+      background-color: rgb(21, 101, 192);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
+    }
+
+    @media (hover: none) {
+      .css-1wst2q6:hover {
+        background-color: rgb(25, 118, 210);
+      }
+    }
+
+    .css-1wst2q6:active {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
+    }
+
+    .css-1wst2q6.Mui-focusVisible {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+    }
+
+    .css-1wst2q6.Mui-disabled {
+      color: rgba(0, 0, 0, 0.26);
+      box-shadow: none;
+      background-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .css-1vq2nua {
+      display: inline-flex;
+      -moz-box-align: center;
+      align-items: center;
+      -moz-box-pack: center;
+      justify-content: center;
+      position: relative;
+      box-sizing: border-box;
+      outline: 0px;
+      border: 0px;
+      margin: 0px;
+      cursor: pointer;
+      user-select: none;
+      vertical-align: middle;
+      appearance: none;
+      text-decoration: none;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      letter-spacing: 0.02857em;
+      min-width: 64px;
+      padding: 6px 16px;
+      border-radius: 4px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      color: rgb(255, 255, 255);
+      background-color: rgb(25, 118, 210);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+      width: 100%;
+      text-transform: none;
+    }
+
+    .css-1vq2nua::-moz-focus-inner {
+      border-style: none;
+    }
+
+    .css-1vq2nua.Mui-disabled {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    @media print {
+      .css-1vq2nua {
+        print-color-adjust: exact;
+      }
+    }
+
+    .css-1vq2nua:hover {
+      text-decoration: none;
+      background-color: rgb(21, 101, 192);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
+    }
+
+    @media (hover: none) {
+      .css-1vq2nua:hover {
+        background-color: rgb(25, 118, 210);
+      }
+    }
+
+    .css-1vq2nua:active {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
+    }
+
+    .css-1vq2nua.Mui-focusVisible {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+    }
+
+    .css-1vq2nua.Mui-disabled {
+      color: rgba(0, 0, 0, 0.26);
+      box-shadow: none;
+      background-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .css-w0pj6f {
+      overflow: hidden;
+      pointer-events: none;
+      position: absolute;
+      z-index: 0;
+      inset: 0px;
+      border-radius: inherit;
+    }
+
+    .css-19ri5qq {
+      opacity: 0;
+      position: absolute;
+    }
+
+    .css-19ri5qq.MuiTouchRipple-rippleVisible {
+      opacity: 0.3;
+      transform: scale(1);
+      animation-name: animation-1taevns;
+      animation-duration: 550ms;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .css-19ri5qq.MuiTouchRipple-ripplePulsate {
+      animation-duration: 200ms;
+    }
+
+    .css-19ri5qq .MuiTouchRipple-child {
+      opacity: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: currentcolor;
+    }
+
+    .css-19ri5qq .MuiTouchRipple-childLeaving {
+      opacity: 0;
+      animation-name: animation-5ich1p;
+      animation-duration: 550ms;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .css-19ri5qq .MuiTouchRipple-childPulsate {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      animation-name: animation-f6tr5a;
+      animation-duration: 2500ms;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      animation-iteration-count: infinite;
+      animation-delay: 200ms;
+    }
+
+    @keyframes animation-f6tr5a {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(0.92);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes animation-f6tr5a {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(0.92);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes animation-5ich1p {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes animation-5ich1p {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes animation-1taevns {
+      0% {
+        transform: scale(0);
+        opacity: 0.1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.3;
+      }
+    }
+
+    @keyframes animation-1taevns {
+      0% {
+        transform: scale(0);
+        opacity: 0.1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.3;
+      }
+    }
+  </style>
+  <meta charset="UTF-8">
+  <link rel="icon" href="favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="4 teh Shiba misssdooors">
+  <link rel="apple-touch-icon" href="https://app.osaka.win/logo192.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://osaka.win/">
+  <meta property="og:title" content="Osaka Protocol">
+  <meta property="og:description" content="4 teh Shiba misssdooors">
+  <meta property="og:image" content="https://osaka.win/preview.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://osaka.win/">
+  <meta property="twitter:title" content="Osaka Protocol">
+  <meta property="twitter:description" content="4 teh Shiba misssdooors">
+  <meta property="twitter:image" content="https://osaka.win/preview.png">
+  <link rel="manifest" href="https://app.osaka.win/manifest.json">
+  <link href="css2.css" rel="stylesheet">
+  <title>Osaka Protocol</title>
+  <link href="main.ee5dbcde.css" rel="stylesheet">
+  <style data-emotion="css-global" data-s="">
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    ::before,
+    ::after {
+      box-sizing: inherit;
+    }
+
+    strong,
+    b {
+      font-weight: 700;
+    }
+
+    body {
+      margin: 0px;
+      color: rgba(0, 0, 0, 0.87);
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.5;
+      letter-spacing: 0.00938em;
+      background-color: rgb(255, 255, 255);
+    }
+
+    @media print {
+      body {
+        background-color: rgb(255, 255, 255);
+      }
+    }
+
+    body::backdrop {
+      background-color: rgb(255, 255, 255);
+    }
+  </style>
+</head>
+
+<body><noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root">
+    <div class="MuiContainer-root MuiContainer-maxWidthLg css-1qsxih2">
+      <div class="m-4 mb-8">
+        <div class="MuiStack-root css-95g4uk">
+          <div class="MuiStack-root css-1xqts8g"><img src="token.svg" height="42">
+            <h1 class="MuiTypography-root MuiTypography-body1 css-orv39">Osaka Protocol</h1>
+          </div>
+          <div class="MuiStack-root css-1kr8zk1"><button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium css-1q1oumt"
+              tabindex="0" type="button">Home<span class="MuiTouchRipple-root css-w0pj6f"></span></button><button
+              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium css-1q1oumt"
+              tabindex="0" type="button">Farm<span class="MuiTouchRipple-root css-w0pj6f"></span></button><a
+              href="https://t.me/Osakaprotocol" target="_blank"><button
+                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium css-1q1oumt"
+                tabindex="0" type="button">Telegram<span class="MuiTouchRipple-root css-w0pj6f"></span></button></a><a
+              href="https://medium.com/@mephis3/hello-frens-1531b48666cb" target="_blank"><button
+                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium css-1q1oumt"
+                tabindex="0" type="button">Medium<span class="MuiTouchRipple-root css-w0pj6f"></span></button></a><a
+              href="https://github.com/osakaprotocol" target="_blank"><button
+                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium css-1q1oumt"
+                tabindex="0" type="button">Github<span class="MuiTouchRipple-root css-w0pj6f"></span></button></a><a
+              href="https://bridge.osaka.win/" target="_blank"><button
+                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium css-1q1oumt"
+                tabindex="0" type="button">Bridge<span class="MuiTouchRipple-root css-w0pj6f"></span></button></a></div>
+          <div class="MuiStack-root css-j7qwjs"><button
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium rounded-lg css-nk0ocp"
+              tabindex="0" type="button">Connect Wallet<span class="MuiTouchRipple-root css-w0pj6f"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="MuiContainer-root MuiContainer-maxWidthLg css-1qsxih2">
+      <div class="MuiStack-root css-1e273kk"><img src="token.svg" height="128"></div>
+      <div class="MuiContainer-root MuiContainer-maxWidthSm mt-8 css-1m6pqln">
+        <div class="MuiStack-root css-1frlc1u">
+          <div class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-aoeo82">
+            <div class="MuiStack-root p-8 css-523woz">
+              <div class="circle"><img src="face.svg" height="42"></div>
+              <h3 class="MuiTypography-root MuiTypography-h5 css-1gw5wdc">Revenue Share</h3><button id="connect_button"
+                class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-fullWidth MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-fullWidth rounded-lg css-1vq2nua"
+                tabindex="0" type="button">Claim<span class="MuiTouchRipple-root css-w0pj6f"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
